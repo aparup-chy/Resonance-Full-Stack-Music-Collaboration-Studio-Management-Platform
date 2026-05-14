@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import useAuthStore from '../store/authStore';
 
@@ -43,12 +43,14 @@ const SignupPage = () => {
     }
 
     try {
-      // Create a user object with the required fields
+      const fullName = `${formData.firstName.trim()} ${formData.lastName.trim()}`.trim();
+      const normalizedRole = formData.role?.toString().toLowerCase() === 'artist' ? 'artist' : 'standard';
+
       const userData = {
-        name: `${formData.firstName} ${formData.lastName}`,
-        email: formData.email,
+        name: fullName,
+        email: formData.email.trim(),
         password: formData.password,
-        role: formData.role
+        role: normalizedRole
       };
       
       const result = await register(userData);
@@ -75,9 +77,9 @@ const SignupPage = () => {
   };
 
   return (
-    <div className="app-background min-h-screen">
+    <div className="flex flex-col min-h-screen bg-cover bg-center text-white" style={{ backgroundImage: "url('piano-background.jpg')" }}>
       <Navbar showSignup={false} />
-      <div className="min-h-screen flex justify-center items-center px-4">
+      <div className="flex-1 flex justify-center items-center px-4">
         <div className="bg-black/70 backdrop-blur-md p-8 rounded-2xl shadow-2xl w-full max-w-md border border-white/30 text-white">
           <h1 className="text-center text-3xl font-bold mb-8">Create Your Account</h1>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -169,6 +171,10 @@ const SignupPage = () => {
             >
               Sign Up
             </button>
+            
+            <div className="mt-4 text-center text-white/80">
+              Already have an account? <Link to="/login" className="text-white hover:underline">Login</Link>
+            </div>
           </form>
         </div>
       </div>

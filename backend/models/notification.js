@@ -1,42 +1,43 @@
 import mongoose from 'mongoose';
 
-const Schema = mongoose.Schema;
-const NotificationSchema = new Schema({
-    recipient: {
-      type: Schema.Types.ObjectId,
-      ref: 'User',
-      required: true
-    },
-    type: {
-      type: String,
-      enum: ['claim_submitted', 'claim_status_change', 'item_status_change', 'new_item_match', 'item_expired', 'rating_received', 'item_followed'],
-      required: true
-    },
-    item: {
-      type: Schema.Types.ObjectId,
-      ref: 'Item'
-    },
-    claim: {
-      type: Schema.Types.ObjectId,
-      ref: 'Claim'
-    },
-    message: {
-      type: String,
-      required: true
-    },
-    isRead: {
-      type: Boolean,
-      default: false
-    },
-    actionLink: {
-      type: String
-    },
-    sender: {
-      type: Schema.Types.ObjectId,
-      ref: 'User'
-    }
-  }, { timestamps: true });
+const notificationSchema = new mongoose.Schema({
+  recipient: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  actor: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  type: {
+    type: String,
+    enum: ['comment', 'like', 'dislike', 'reply', 'mention'],
+    required: true
+  },
+  relatedPost: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'CollaborationPost'
+  },
+  relatedComment: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Comment'
+  },
+  message: {
+    type: String,
+    required: true
+  },
+  read: {
+    type: Boolean,
+    default: false
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  }
+});
 
+const Notification = mongoose.model('Notification', notificationSchema);
 
-  const Notification = mongoose.model('Notification', NotificationSchema);
-  export default Notification;
+export default Notification;

@@ -10,6 +10,11 @@ export const register = async (req, res) => {
   console.log('Received request to register a new user'); 
   try {
     const { name, email, password, role } = req.body;
+    console.log('Received signup payload:', { name, email, password: password ? '***' : undefined, role });
+
+    const requestedRole = typeof role === 'string' ? role.toLowerCase().trim() : '';
+    const validRoles = ['standard', 'artist'];
+    const userRole = requestedRole === 'artist' ? 'artist' : 'standard';
 
     // Check if user already exists
     let user = await User.findOne({ email });
@@ -18,9 +23,6 @@ export const register = async (req, res) => {
     }
 
     // Validate role
-    const validRoles = ['standard', 'artist'];
-    const userRole = role === 'artist' ? 'artist' : 'standard';
-    
     if (role && !validRoles.includes(userRole)) {
       return res.status(400).json({ message: 'Invalid role' });
     }
@@ -29,29 +31,18 @@ export const register = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Create verification token
-    const emailVerificationToken = crypto.randomBytes(32).toString('hex');
-
-    // Create new user
+    // Create new user without email verification dependency
     user = new User({
       name,
       email,
       password: hashedPassword,
       role: userRole,
-      emailVerificationToken
+      isEmailVerified: true
     });
-
+   
     await user.save();
 
-    // Send verification email
-    const verificationUrl = `${process.env.CLIENT_URL}/verify-email?token=${emailVerificationToken}`;
-    await sendEmail(
-      email,
-      'Email Verification',
-      `Please verify your email by clicking the link: ${verificationUrl}`
-    );
-
-    return res.status(201).json({ message: 'User registered successfully. Please verify your email.' });
+    return res.status(201).json({ message: 'User registered successfully.' });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: 'Server error' });

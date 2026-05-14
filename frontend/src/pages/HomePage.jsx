@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 const FAQ_DATA = [
   {
@@ -49,10 +50,10 @@ const HomePage = () => {
             Your ultimate destination for studio bookings, instrument shopping, and musician collaboration.
           </p>
           <div className="mt-8 flex space-x-4">
-            <Link to="/studios" className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <Link to="/booking" className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
               Book Studios
             </Link>
-            <Link to="/shop" className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+            <Link to="/products" className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
               Shop Instruments
             </Link>
           </div>
@@ -83,17 +84,7 @@ const HomePage = () => {
           <Link to="/about" className="text-white no-underline hover:text-blue-300">About Us</Link>
         </div>
       </div>
-      <footer className="bg-black bg-opacity-50 text-center p-4">
-        <div className="flex justify-center space-x-6 mb-4">
-          <a href="https://instagram.com/resonance" target="_blank" rel="noopener noreferrer" className="text-white hover:text-pink-400">
-            <i className="fab fa-instagram text-xl"></i> Instagram
-          </a>
-          <a href="https://youtube.com/resonance" target="_blank" rel="noopener noreferrer" className="text-white hover:text-red-500">
-            <i className="fab fa-youtube text-xl"></i> YouTube
-          </a>
-        </div>
-        <p>© 2025 Resonance. All Rights Reserved</p>
-      </footer>
+      <Footer />
     </div>
   );
 };

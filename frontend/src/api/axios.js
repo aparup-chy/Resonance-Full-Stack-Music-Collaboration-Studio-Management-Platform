@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  baseURL: import.meta.env.VITE_API_URL || '/api',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -61,10 +61,18 @@ api.interceptors.response.use(
       try {
         const refreshToken = localStorage.getItem('refreshToken');
         if (!refreshToken) {
-          // No refresh token, redirect to login
+          // No refresh token, clear auth and redirect to login
           localStorage.removeItem('accessToken');
           localStorage.removeItem('refreshToken');
-          window.location.href = '/login';
+          localStorage.removeItem('auth-storage');
+          
+          // Dispatch logout event for auth store
+          window.dispatchEvent(new Event('logout'));
+          
+          // Redirect to login only if not already on login page
+          if (window.location.pathname !== '/login') {
+            window.location.href = '/login';
+          }
           return Promise.reject(error);
         }
         
@@ -89,8 +97,17 @@ api.interceptors.response.use(
         processQueue(refreshError, null);
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
-        window.location.href = '/login';
+        localStorage.removeItem('auth-storage');
+        
+        // Dispatch logout event for auth store
+        window.dispatchEvent(new Event('logout'));
+        
         isRefreshing = false;
+        
+        // Redirect to login only if not already on login page
+        if (window.location.pathname !== '/login') {
+          window.location.href = '/login';
+        }
         return Promise.reject(refreshError);
       }
     }
