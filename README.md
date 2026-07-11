@@ -2,6 +2,10 @@
 
 Resonance is a full-stack web application designed for music-related services such as studio booking, instrument rentals, product purchasing, user authentication, and admin management. The platform provides a modern and seamless experience for both customers and administrators.
 
+## Live Demo
+
+View the project online: https://resonance-frontend-ouhc.onrender.com
+
 ## Overview
 
 Resonance brings together several core features into one integrated system:
@@ -80,96 +84,8 @@ frontend/
 - Manage rewards and points
 - Manage site information and content
 
-## Prerequisites
-
-Before running the project locally, make sure you have:
-
-- Node.js installed
-- MongoDB running or a MongoDB Atlas connection string
-- A mail service configured if you want email functionality
-
-## Environment Variables
-
-Create a `.env` file in the project root for the backend with the following variables:
-
-```env
-PORT=5001
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-JWT_REFRESH_SECRET=your_refresh_secret
-CLIENT_URL=http://localhost:5173
-EMAIL_HOST=smtp.example.com
-EMAIL_PORT=587
-EMAIL_SECURE=false
-EMAIL_USER=your_email
-EMAIL_PASS=your_email_password
-EMAIL_FROM=your_email
-EMAIL_FROM_NAME=Resonance
-```
-
-Create a `.env` file inside the frontend directory for the frontend:
-
-```env
-VITE_API_URL=http://localhost:5001/api
-```
-
-## Installation
-
-### 1. Install backend dependencies
-
-```bash
-npm install
-```
-
-### 2. Install frontend dependencies
-
-```bash
-cd frontend
-npm install
-```
-
-## Running the Application Locally
-
-### Start the backend
-
-From the project root:
-
-```bash
-npm run dev
-```
-
-### Start the frontend
-
-From the frontend folder:
-
-```bash
-cd frontend
-npm run dev
-```
-
-The frontend will usually run at:
-
-```text
-http://localhost:5173
-```
-
-The backend will run at:
-
-```text
-http://localhost:5001
-```
-
-## Deployment Notes
-
-This project is configured to work with separate frontend and backend deployments. For production:
-
-- Set the frontend environment variable `VITE_API_URL` to the deployed backend URL
-- Ensure the backend has access to MongoDB and email credentials
-- Make sure uploaded image files are stored in a persistent location
-
 ## Notes
 
-- Uploaded images are stored in the `uploads` directory and served from the backend
 - The project includes a complete admin panel for content and service management
 - The application is built as a full-stack demo and can be extended with additional features such as payments, notifications, and analytics
 
