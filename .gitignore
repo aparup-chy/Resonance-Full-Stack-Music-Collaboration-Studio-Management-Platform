@@ -6,6 +6,5 @@ dist
 frontend/dist/
 .DS_Store
 .env
-uploads/
 .vscode/
 *.log
